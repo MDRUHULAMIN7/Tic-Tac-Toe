@@ -5,7 +5,7 @@ let msgContainer = document.querySelector(".msg-container")
 let msg = document.querySelector(".msg")
 let game = document.querySelector(".game")
 let turn0 = true;
-
+let turnIndicator = document.querySelector(".turn-indicator");
 const winPatterns =[
     [0,1,2],
     [0,3,6],
@@ -13,12 +13,41 @@ const winPatterns =[
     [1,4,7],
     [2,5,8],
     [2,4,6],
+    [3,4,5],
     [3,5,6],
     [6,7,8],
 ];
 
+
+
+
+const updateTurn = () => {
+    turnIndicator.innerText = ` Now Turn: ${turn0 ? "X" : "O"}`;
+};
+
+
+boxes.forEach((box) => {
+    box.addEventListener("click", () => {
+        if (box.innerText === "" && turn0) {
+            box.innerText = "X";
+            box.classList.add("new1");
+            turn0 = false;
+        } else if (box.innerText === "" && !turn0 ) {
+            box.innerText = "O";
+            box.classList.add("new");
+            turn0 = true;
+        }
+        box.disabled = true;
+        updateTurn(); // Update the turn after each click
+        checkWinner();
+    });
+});
+
+
 const resetGame=()=>{
+    window.location.reload();
     turn0 = true;
+    updateTurn();
     enaableAllBtn()
 }
 
@@ -27,7 +56,7 @@ boxes.forEach((box) => {
     box.addEventListener("click", () => {
         if(box.innerText === "" && turn0){
             box.innerText = "X";
-            
+            box.classList.add("new1")
             turn0 = false;
         } else if(box.innerText === "" &&!turn0){
             box.innerText = "O";
@@ -42,7 +71,7 @@ boxes.forEach((box) => {
 
 const showWinner =(winner)=>{
     disableAllBtn()
-    msg.innerText ="Congratulation" + winner + " has won!";
+    msg.innerText ="Congratulation "   + winner + " has won!";
     msgContainer.classList.remove("hide")
 }
 
@@ -76,6 +105,6 @@ const checkWinner =() => {
     }
     
 }
-
+updateTurn();
 resetBtn.addEventListener("click", resetGame)
 newMsgBtn.addEventListener("click", resetGame)
