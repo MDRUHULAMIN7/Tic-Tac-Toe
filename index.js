@@ -126,6 +126,7 @@ boxes.forEach(box => {
 
 
 const resetGame = () => {
+    window.location.reload();
     enaableAllBtn();
     turn0 = true;
     updateTurn();
